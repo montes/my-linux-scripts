@@ -116,36 +116,36 @@ cont=0
 
 for i in "${SERIE[@]}"
 do
-	files=$(ls $folder$i*.m2v 2> /dev/null | grep [^*$] -c)
-	if [[ $files > 0 ]]; then
-		for f in $(ls "$folder$i"*.m2v)
-		do
-			fich=$(basename "$f")
-			ext=$(echo "$fich" | sed 's/^.*\.//')
-			name=$(basename "$f" .${ext})
-			#echo "Comprimir -$cont- -$name- -$ext- -$fich-"
-			mp2=$(ls $folder$name*.mp2 | grep [^*$] -c)
-			if [[ $mp2 > 1 ]]; then
-				echo
-				echo "- Comprimiendo $name con dos pasos, sonido dual, bitrate de ${QUAL[$cont]} y crop de ${CROP[$cont]} -"
-				echo
-				ffmpeg -vsync 1 -y -i $folder$name.m2v -an -vcodec libx264 -vpre placebo_firstpass -threads 0 \
-					 -deinterlace -b ${QUAL[$cont]} -vf crop=${CROP[$cont]} $folder$name.mp4 -pass 1 \
-					&& ffmpeg -vsync 1 -y -i $folder$name.m2v -i $folder$name.mp2 -i "$folder$name"[1].mp2 -ab 48k \
-					-vcodec libx264 -metadata artist="Capturado y comprimido usando Ubuntu" -acodec libfaac -vpre placebo \
-					-threads 0 -deinterlace -b ${QUAL[$cont]} -vf crop=${CROP[$cont]} -alang spa $folder$name.mp4 -alang eng -newaudio -pass 2
-			else
-				echo
-				echo "- Comprimiendo $name con dos pasos, bitrate de ${QUAL[$cont]} y crop de ${CROP[$cont]} -"
-				echo
-				ffmpeg -vsync 1 -y -i $folder$name.m2v -an -vcodec libx264 -vpre placebo_firstpass -threads 0 \
-					-deinterlace -b ${QUAL[$cont]} -vf crop=${CROP[$cont]} $folder$name.mp4 -pass 1 \
-					&& ffmpeg -vsync 1 -y -i $folder$name.m2v -i $folder$name.mp2 -ab 48k -vcodec libx264 -metadata \
-					artist="Capturado y comprimido usando Ubuntu" -acodec libfaac -vpre placebo -threads 0 -deinterlace \
-					-b ${QUAL[$cont]} -vf crop=${CROP[$cont]} $folder$name.mp4 -pass 2
-			fi
-		done
-	fi
-	((cont++))
+    files=$(ls $folder$i*.m2v 2> /dev/null | grep [^*$] -c)
+    if [[ $files > 0 ]]; then
+        for f in $(ls "$folder$i"*.m2v)
+        do
+            fich=$(basename "$f")
+            ext=$(echo "$fich" | sed 's/^.*\.//')
+            name=$(basename "$f" .${ext})
+            #echo "Comprimir -$cont- -$name- -$ext- -$fich-"
+            mp2=$(ls $folder$name*.mp2 | grep [^*$] -c)
+            if [[ $mp2 > 1 ]]; then
+	            echo
+                echo "- Comprimiendo $name con dos pasos, sonido dual, bitrate de ${QUAL[$cont]} y crop de ${CROP[$cont]} -"
+                echo
+                ffmpeg -vsync 1 -y -i $folder$name.m2v -an -vcodec libx264 -vpre placebo_firstpass -threads 0 \
+                    -deinterlace -b ${QUAL[$cont]} -vf crop=${CROP[$cont]} $folder$name.mp4 -pass 1 \
+                    && ffmpeg -vsync 1 -y -i $folder$name.m2v -i $folder$name.mp2 -i "$folder$name"[1].mp2 -ab 48k \
+                    -vcodec libx264 -metadata artist="Capturado y comprimido usando Ubuntu" -acodec libfaac -vpre placebo \
+                    -threads 0 -deinterlace -b ${QUAL[$cont]} -vf crop=${CROP[$cont]} -alang spa $folder$name.mp4 -alang eng -newaudio -pass 2
+            else
+                echo
+                echo "- Comprimiendo $name con dos pasos, bitrate de ${QUAL[$cont]} y crop de ${CROP[$cont]} -"
+                echo
+                ffmpeg -vsync 1 -y -i $folder$name.m2v -an -vcodec libx264 -vpre placebo_firstpass -threads 0 \
+                    -deinterlace -b ${QUAL[$cont]} -vf crop=${CROP[$cont]} $folder$name.mp4 -pass 1 \
+                    && ffmpeg -vsync 1 -y -i $folder$name.m2v -i $folder$name.mp2 -ab 48k -vcodec libx264 -metadata \
+                    artist="Capturado y comprimido usando Ubuntu" -acodec libfaac -vpre placebo -threads 0 -deinterlace \
+                    -b ${QUAL[$cont]} -vf crop=${CROP[$cont]} $folder$name.mp4 -pass 2
+            fi
+        done
+    fi
+    ((cont++))
 done
 
