@@ -4,7 +4,13 @@
  * Check that every production site has correct robots.txt file
  * using Statuscake API to get sites urls
  *
- * (@montesjmm - incubalia.com)
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as
+ * published by the Free Software Foundation; either version 2 of
+ * the License, or (at your option) any later version.
+ *
+ * Written by @montesjmm - montesjmm.com
+ * (C) incubalia.com
  */
 
 $apiKey   = ''; // Statuscake api key
